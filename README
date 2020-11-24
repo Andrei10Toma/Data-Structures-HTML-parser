@@ -1,0 +1,103 @@
+Toma Andrei 311 CB
+
+	Pentru implementarea temei am folosit mai multe fisiere: coada.c,
+coada.h, lib.h, lista_generica.h, lista_generica.c, functii.c, interpret.c, 
+main.c.
+________________________________________________________________________________
+	
+	coada.h si coada.c:
+
+	In fisierul .h se afla definirea structurii de coada, macrodefintitiile 
+pentru coada cat si defintiile antetelor operatiilor de baza care se pot face 
+pe coada: InitQ, IntrQ, ExtrQ, DistrQ, ResetQ.
+	In fisierul .c se afla implementarea acestora care este similara cu cea
+de la a doua tema.
+________________________________________________________________________________
+
+	lista_generica.h si lista_generica.c:
+	
+	In fisierul .h se afla definirea structurii lista_generica si definirea
+antetului DistrugeL care distruge lista. Coada este implementata cu lista
+generica.
+	In fisierul .c se afla implementata aceasta functie de distrugere a
+listei generice care este similara cu cea de la a doua tema.
+________________________________________________________________________________
+	
+	lib.h:
+	
+	In acest fisier este definita structura de arbore, structura pentru
+informatia continuta de un nod al arborelui si structura pentru listele de
+atribute (style sau otherAttributes). De asemenea, sunt definite antetele
+functiilor cu vom crea si modifica arborele care contine html-ul parsat.
+________________________________________________________________________________
+
+	interpret.c:
+
+	In acest fisier sunt implementate functiile cu ajutorul carora am parsat
+in arbore fisierul html: Create_Tag_Node, Add_Lists, Interpret, Sterge_Spatii,
+Sterge_Ultim_Punct, Parcurgere. In functia Interpret de fiecare data cand este
+gasita o paranteza deschisa se creaza un nod nou si este legat in arbore cu
+ajutorul functiei Create_Tag_Node si este actualizat pid-ul pentru a stii
+nodul curent. Pana se inchide paranteza se face append la type si daca este
+cazul se face append si la cele 2 stringuri temporare tmp_name si val_name care
+reprezinta numele atributului si, respectiv, valoarea atributului. Dupa ce se
+inchide paranteza in functie de tmp_name sunt adaugate in lista de style sau
+de otherAttributes. Mai departe, daca este cazul se face append la content.
+Altfel, se inchide tagul, se stabileste tipul de inchide al tagului si ne
+intoarcem la parintele nodului curent, actualizand pid-ul prin stergerea
+numarului dupa ultimul punct si a ultimului punct cu ajutorul functiei
+Sterge_Ultim_Punct.
+________________________________________________________________________________
+
+	functii.c:
+
+	In acest fisier sunt implementate functiile care aloca spatiu pentru un
+nod al arobrelui, pentru o celula a listelor de atribute, cele care elibereaza
+memoria pentru un arbore si memoria pentru o lista, functiile care modifica
+arborele (deleteRecursively, appendStyle, overrideStyle, add) si functia care
+afiseaza codul html formatat (format). 
+	Functia Format este o functie revursiva care parcurge arborele in
+adancime si afiseaza toate informatiile pentru fiecare tag html.
+	Pentru comanda add am implementat functia Adauga_Tag care parcurge 
+arborele eficient in functie de id cu ajutorul functiei Parcurgere. Dupa am
+adaugat noul tag cu ajutorul functiei Interpret.
+	Pentru restul comenzilor de modificare a arborelui (deleteRecursively, 
+appendStyle, overrideStyle) am implementat cate o functie pentru fiecare
+selector. La Delete_Recursively_{id_selector}, in afara de cazul in care
+id_selector este 1 cand se parcurge eficient arborele cu functia Parcurgere
+pentru a gasi nodul cu id-ul dat, arborele este parcurs in latime cu ajutorul
+unei cozi si este verificat daca respecta selectorul si este sters. La
+Append_Style_{id_selector} si Override_Style_{id_selector}, in afara de cazul
+in care id_selector este 1 cand se parcurge eficient dupa id cu ajutorul
+functiei Parcurgere pentru a se gasi nodul, arborele este parcurs in latime cu
+ajutorul unei cozi care retine adresele nodurilor. Cand este gasit un nod care
+respecta selectorul i se face operatia de append sau override. La append daca
+numele atributului exista deja ii este actualizata valoarea, altfel este adaugat
+la finalul listei numele si valoarea atributului. La override este distrusa 
+lista style pentru nodul gasit si este inlocuita cu cea data ca parametru. Cand
+este citita comanda deleteRecursively, appendStyle sau overrideStyle se apeleaza
+Delete_Recursively, Append_Style sau Override_Style care in functie de id-ul
+selectorului apeleaza functia respectiva pentru selectorul citit. 
+	De asemenea, pentru comenzile prezentate in paragraful trecut am
+implementat cate o functie auxiliara care face operatia in sine de delete, 
+append sau override (Delete_Recursively_aux, Append_Style_aux, 
+Override_Style_aux).
+	Functia FreeInfo elibereaza memoria pentru informatia pe care o contine
+un nod si, de asemenea, pentru nod. 
+	Functia Distruge_Arb elibereaza memoria pentru tot arborele care pleaca
+din nodul a prin parcurgerea in latime a arborelui.
+________________________________________________________________________________
+
+	main.c:
+
+	In main sunt implementate functiile care obtin informatiile necesare
+pentru comenzi, cum ar fi selectorul, noul style, tag, id-ul etc. In main de
+asemenea este parsat arborele citind caracter cu caracter din fisierul dat ca
+input. De asemenea sunt citite comenzile din fisierul dat ca input pentru 
+comenzi si este apelata functia implementata pentru fiecare comanda.
+________________________________________________________________________________
+
+Punctaj checker local:
+Total: [85/85]
+Bonus: [20/20]
+  
